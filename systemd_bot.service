@@ -1,0 +1,16 @@
+[Unit]
+Description=Bot
+
+[Service]
+ExecStart=node /path/to/working_directory/bot.js
+Restart=always
+User=nobody
+Group=nogroup
+Environment=OPENAI_API_KEY=
+Environment=MAST_API_KEY=
+Environment=PATH=/usr/bin:/usr/local/bin
+WorkingDirectory=/path/to/working_directory
+SyslogIdentifier=Mastodon_Bot
+
+[Install]
+WantedBy=multi-user.target
