@@ -1,19 +1,63 @@
 const { Configuration, OpenAIApi } = require("openai");
 const { login } = require("masto");
 
-
-const main = async () => {
+const connectToMastodonInstance = async (instanceUrl, instanceAccessToken) => {
   let masto;
   try {
     masto = await login({
-      url: 'https://wargamers.social',
-      accessToken: process.env.MAST_API_KEY,
+      url: instanceUrl,
+      accessToken: instanceAccessToken,
     });
-  } catch (err) {
-    console.log('Unable to connect to the wargamers.social instance.');
-    console.log(err.message);
+    return masto;
+  } catch {
+    console.log(`Error connecting to the ${instanceUrl} instance`);
+    return null;
+  }
+};
+
+const sendDirectMessageToUser = async (masto, message, user, replyToStatusId) => {
+  // TODO: validate message < 2000 characters
+  const response =`${user} ${message}`;
+  let status;
+  try {
+    status = await masto.v1.statuses.create({
+      status: response,
+      visibility: 'direct',
+      inReplyToId: replyToStatusId,
+    });
+    return status;
+  } catch {
+    console.log('Error sending response to user');
+    return null;
+  }
+};
+
+const fetchResponseFromOpenAi = async (prompt, openai) => {
+  let completion;
+  try {
+    completion = await openai.createChatCompletion({
+      model: "gpt-3.5-turbo",
+      messages: prompt,
+    });
+    return completion.data.choices[0].message.content;
+  } catch {
+    console.log('Error communicating with openai');
+    return null;
+  }
+};
+
+const main = async () => {
+  // Connect to Mastodon
+  const masto = await connectToMastodonInstance('https://wargamers.social', process.env.MAST_API_KEY);
+  
+  if (!masto) {
     return;
   }
+
+  const configuration = new Configuration({
+    apiKey: process.env.OPENAI_API_KEY,
+  });
+  const openai = new OpenAIApi(configuration);
 
   // Initialize a Map to track if users need to be rate throttled
   let requestMap = new Map();  
@@ -22,17 +66,10 @@ const main = async () => {
   const stream = await masto.v1.stream.streamUser();
 
   // Subscribe to notifications
-  stream.on('notification', (notification) => {  
+  stream.on('notification', async (notification) => {  
     let url = new URL(notification.account.url);
     let hostname = url.hostname;
     let user = `@${notification.account.username}@${hostname}`;
-
-    // We only support users on the wargamers.social instance  
-    if (hostname != 'wargamers.social') {
-      console.log(`${user} is not a user on the wargamers.social instance.`)
-      // TODO: Send DM to user indicating other hostnames are not supported
-      return;
-    }
 
     let statusId = notification.status.id;
     let type = notification.type;
@@ -40,7 +77,15 @@ const main = async () => {
     let numberOfUsersMentioned = notification.status.mentions.length; 
     
     // Reply to direct messages to @bot account only
-    if (type == "mention" && visibility == "direct" && numberOfUsersMentioned == 1) {    
+    if (type == "mention" && visibility == "direct" && numberOfUsersMentioned == 1) {
+      // We only support users on the wargamers.social instance  
+      if (hostname != 'wargamers.social') {
+        console.log(`${user} is not a user on the wargamers.social instance.`)
+        let message = 'Sorry, at this time I only support the wargamers.social instance.';
+        let status = await sendDirectMessageToUser(masto, message, user, statusId);
+        return;
+      }
+
       // We only allow a fixed number of requests over a period
       let rateLimit = 200; // TODO: Make rateLimit and period environment variables
       let period = 1000*60*60*24; // 24 hours
@@ -90,42 +135,17 @@ const main = async () => {
         },
       ];
 
-      fetchAndSendResponse(masto, prompt, user, statusId);
+      let response = await fetchResponseFromOpenAi(prompt, openai);
+      
+      if (!response) {
+        let message = 'I\'m have trouble answering, please try asking again.';
+        let status = await sendDirectMessageToUser(masto, message, user, statusId);
+        return;
+      }
+
+      let status = await sendDirectMessageToUser(masto, response, user, statusId);  
     }
   });
-};
-
-const fetchAndSendResponse = async (masto, prompt, user, statusId) => {
-  const configuration = new Configuration({
-    apiKey: process.env.OPENAI_API_KEY,
-  });
-  const openai = new OpenAIApi(configuration);
-
-  let completion;
-  let response;
-  try {
-    completion = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo",
-      messages: prompt,
-    });
-    response = `${user} ${completion.data.choices[0].message.content}`;
-  } catch (err) {
-    console.log('Error communicating with openai.');
-    console.log(err.message);
-    response = "I'm having trouble answering your question. Please try asking again.";
-  }
-  
-  let status;
-  try {
-    status = await masto.v1.statuses.create({
-      status: response,
-      visibility: 'direct',
-      inReplyToId: statusId,
-    });
-  } catch (err) {
-    console.log('Error sending response to user.');
-    console.log(err.message);
-  }
 };
 
 main();
