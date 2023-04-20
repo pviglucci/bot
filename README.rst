@@ -24,6 +24,8 @@ Characteristics
 
 Configuration
 -------------
+You'll need to use npm to install @dqbd/tiktoken, masto, and openai. See the package.json file.
+
 Bot is configured through environment variables. The following variables are available::
     
     # The URL of your instance
