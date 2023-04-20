@@ -2,7 +2,7 @@
 Bot
 ====
 
-A simple example of Node.js ChatGPT-based Mastodon bot.
+A simple example of a Node.js ChatGPT-based Mastodon bot.
 
 This version has been written to serve as an assistant for a Mastodon instance. However,
 any user can use it to create a private bot for themselves without much modification.
@@ -26,10 +26,10 @@ Configuration
 -------------
 Bot is configured through environment variables. The following variables are available::
     
-    # The URL of the instance
+    # The URL of your instance
     MAST_INSTANCE_URL
     
-    # The API key from the Mastodon application 
+    # The API key from your Mastodon application 
     MAST_API_KEY
     
     # Configurable max toot size for those instances that have changed the default
@@ -71,7 +71,7 @@ A systemd file might include something like this::
     Environment=OPENAI_MAX_COMPLETION_TOKENS=250
     Environment=OPENAI_RATE_LIMIT=200
     Environment=OPENAI_RATE_PERIOD=24
-    Environment=OPENAI_SYSTEM_MESSAGE="A friendly assistant to help understand Mastodon. Be brief."
+    Environment=OPENAI_SYSTEM_MESSAGE="A friendly assistant to help understand Mastodon"
 
 Bot and Privacy
 ---------------
