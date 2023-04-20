@@ -20,7 +20,7 @@ Characteristics
 2) Bot will only respond to accounts on a specififed instance
 3) Bot has conversational state but it limited to one conversation at a time per user
 4) Bot keeps all state in memory but can be easily modified for Redis or a database
-5) Bot does not retain or log more information than needed to preserve user privacy
+5) To preserve user privacy, Bot does not retain or log more information than needed. 
 
 Configuration
 -------------
