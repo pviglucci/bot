@@ -24,9 +24,7 @@ Characteristics
 
 Configuration
 -------------
-Bot is configured through environment variables. See the systemd service file that can
-be used on Linux systems. Non-linux systems can be configured by setting the environment
-variables before launching. The following variables are available::
+Bot is configured through environment variables. The following variables are available::
     # The URL of the instance
     MAST_INSTANCE_URL
     
@@ -58,7 +56,10 @@ variables before launching. The following variables are available::
     # The system message of the model
     OPENAI_SYSTEM_MESSAGE
 
-An systemd file might include something like this::
+See the systemd service file that can be used on Linux systems. Non-linux systems can 
+be configured by setting the environment variables before launching.
+
+A systemd file might include something like this::
     Environment=MAST_INSTANCE_URL=https://wargamers.social
     Environment=MAST_API_KEY=<KEY HERE>
     Environment=MAST_MAX_TOOT_SIZE=2000
