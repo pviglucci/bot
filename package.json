@@ -14,6 +14,7 @@
   "author": "Peter Viglucci",
   "license": "MIT",
   "dependencies": {
+    "@dqbd/tiktoken": "^1.0.6",
     "masto": "^5.11.1",
     "openai": "^3.2.1"
   }

@@ -6,8 +6,16 @@ ExecStart=node /path/to/working_directory/bot.js
 Restart=always
 User=nobody
 Group=nogroup
-Environment=OPENAI_API_KEY=
+Environment=MAST_INSTANCE_URL=
 Environment=MAST_API_KEY=
+Environment=MAST_MAX_TOOT_SIZE=
+Environment=OPENAI_API_KEY=
+Environment=OPENAI_MODEL=
+Environment=OPENAI_MAX_REQUEST_TOKENS=
+Environment=OPENAI_MAX_COMPLETION_TOKENS=
+Environment=OPENAI_RATE_LIMIT=
+Environment=OPENAI_RATE_PERIOD=
+Environment=OPENAI_SYSTEM_MESSAGE=
 Environment=PATH=/usr/bin:/usr/local/bin
 WorkingDirectory=/path/to/working_directory
 SyslogIdentifier=Mastodon_Bot
