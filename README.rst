@@ -33,26 +33,26 @@ Bot is configured through environment variables. The following variables are ava
     
     # Configurable max toot size for those instances that have changed the default
     MAST_MAX_TOOT_SIZE
-
+    
     # Your OpenAPI API key
     OPENAI_API_KEY
-
+    
     # The model to use (gpt-3.5-turbo, gpt-4)
     OPENAI_MODEL
-
+    
     # Configurable request token size for finer grained control over conversation length
     OPENAI_MAX_REQUEST_TOKENS
-
+    
     # The max tokens of the response
     # 1 token = ~4 English characters 
     OPENAI_MAX_COMPLETION_TOKENS
-
+    
     # Max requests a user can make over a period
     OPENAI_RATE_LIMIT
-
+    
     # The period represented in hours
     OPENAI_RATE_PERIOD
-
+        
     # The system message of the model
     OPENAI_SYSTEM_MESSAGE
 
