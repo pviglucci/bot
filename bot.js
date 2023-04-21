@@ -278,6 +278,9 @@ const main = async () => {
 
             // Append the new question
             prompt.push({role: 'user', content: question}); 
+          } else {
+            // The user responded to an old thread, start a new conversation
+            statusMap = new Map();
           }
         }  
       }
