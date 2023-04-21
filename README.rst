@@ -10,7 +10,7 @@ any user can use it to create a private bot for themselves without much modifica
 You can send the bot a direct message and it'll respond with a direct message back to you.
 Bot is based on the GPT LLM from OpenAI and supports the gpt-3.5-turbo and gpt-4 models.
 
-Consider this an alpha project for testing that may break.
+Consider this an alpha project for testing and experimenting.
 
 This is for fun. LLM are good at inventing facts. Don't rely on it for anything important.
 
