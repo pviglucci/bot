@@ -91,14 +91,14 @@ Instance admins can access those DMs.
 That's true for everything on an instance of course, but posts where users search for 
 information feels more personal than the typical.
 
-I encourage you to be transparanet with your users so they can decide if and how you interact with Bot.
+I encourage you to be transparent with your users so they can decide if and how you interact with Bot.
 
 Here are steps I've taken and commitments I've made to users on my instance:  
 
 1) Bot is an unmonitored account
 2) All Bot's posts are deleted after 1 week
-3) Posts that a user favorites are retained - users decide if posts are retained or not. 
-4) Users can delete their posts whenever they want.
+3) Posts that a user favorites are retained; through their actions, users decide if posts are retained or not
+4) Users can delete their posts whenever they want
 
 License
 -------
