@@ -222,7 +222,7 @@ const main = async () => {
       if (hostname != instanceHostname) {
         console.log(`${user} is not a user on the ${instanceHostname} instance.`);
         let message = `Sorry, at this time I only support the ${instanceHostname} instance.`;
-        let status = await sendDirectMessageToUser(masto, message, user, statusId);
+        let status = sendDirectMessageToUser(masto, message, user, statusId);
         return;
       }
 
@@ -301,7 +301,6 @@ const main = async () => {
       }
 
       // Adjust the prompt to be within the token limit of the model with space to fit the completion
-      // TODO: set as an environment variable
       while (await getTokenCountFromPrompt(prompt, model) > maxRequestTokens) {
         if (prompt.length == 1) {
           break;
@@ -313,7 +312,7 @@ const main = async () => {
 
       if (!response) {
         let message = 'I\'m have trouble answering, please try asking again.';
-        let status = await sendDirectMessageToUser(masto, message, user, statusId, 500);
+        let status = sendDirectMessageToUser(masto, message, user, statusId, 500);
         return;
       }
       let status = await sendDirectMessageToUser(masto, response, user, statusId, maxTootSize);
