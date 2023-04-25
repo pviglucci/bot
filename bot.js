@@ -309,11 +309,9 @@ const main = async () => {
       };
 
       let response = await fetchResponseFromOpenAi(prompt, openai, model);
-
+      
       if (!response) {
-        let message = 'I\'m have trouble answering, please try asking again.';
-        let status = sendDirectMessageToUser(masto, message, user, statusId, 500);
-        return;
+        response = 'I\'m have trouble answering, please try asking again.';
       }
       let status = await sendDirectMessageToUser(masto, response, user, statusId, maxTootSize);
 
